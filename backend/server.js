@@ -23,6 +23,9 @@ connection.once("open", () => {
     console.log("Mongo DB successful!");
 });
 
+const studentRouter = require("./routes/students");
+app.use("/student",studentRouter);
+
 app.listen(PORT, () => {
     console.log(`Server is up and running on port ${PORT}`);
 });
