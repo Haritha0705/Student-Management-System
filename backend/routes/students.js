@@ -20,7 +20,7 @@ router.route("/add").post((req, res)=>{
     });
 });
 
-router.route("/ ").get((req, res)=>{
+router.route("/").get((req, res)=>{
     Student.find().then((student)=>{
         res.json(student);
     }).catch((err)=>{
@@ -38,7 +38,7 @@ router.route("/update/:id").put(async (req,res)=>{
     }
 
     const udpate = await Student.findByIdAndUpdate(userId,updateStudent).then(()=>{
-        res.status(200).send({status:"User Update",user:udpate});
+        res.status(200).send({status:"User Update"});
     }).catch((err)=>{
         console.log(err);
         res.status(500).send({status:"Error with updating user",error:err.message})
@@ -56,8 +56,8 @@ router.route("/delete/:id").delete(async (req,res)=>{
 
 router.route("/get/:id").get(async (req,res)=>{
     let userId = req.params.id;
-    await Student.findById(userId).then(()=>{
-        res.status(200).send({status:"User fetched",user:userId})
+    await Student.findById(userId).then((student)=>{
+        res.status(200).send({status:"User fetched",student})
     }).catch((err)=>{
         console.log(err.message);
         res.status(500).send({status:"Error with get user",error:err.message})
