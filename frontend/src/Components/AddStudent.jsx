@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from "axios";
 
 function AddStudent() {
     const [name, setName] = useState('');
@@ -12,7 +13,16 @@ function AddStudent() {
             age,
             gender
         }
-        console.log(newStudent);
+
+        axios.post("http://localhost:8070/student/add/",newStudent).then(()=>{
+            alert("Student Add")
+            setName("");
+            setAge("");
+            setGender("");
+        }).catch((err)=>{
+            alert(err)
+        })
+
     }
 
 

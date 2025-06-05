@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 const navigation = [
     { name: 'Dashboard', to: '/' },
-    { name: 'Create Student', to: '/addstudent' },
+    { name: 'Create Student', to: '/add' },
 ];
 
 function classNames(...classes) {
