@@ -1,35 +1,76 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 function AddStudent() {
+    const [name, setName] = useState('');
+    const [age, setAge] = useState('');
+    const [gender, setGender] = useState('');
 
-    const [name,setname] = useState("")
-    const [age,setage] = useState("")
-    const [gender,setgender] = useState("")
+    function sentData(e) {
+        e.preventDefault();
+        const newStudent= {
+            name,
+            age,
+            gender
+        }
+        console.log(newStudent);
+    }
 
 
     return (
-        <div className="w-full max-w-xs">
-            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div className="w-full max-w-xs mx-auto mt-10">
+            <form onSubmit={sentData} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">Student Name</label>
-                    <input onChange={(e)=>{
-                        setname(e.target.value)
-                    }} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Enter Student Name"/>
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+                        Student Name
+                    </label>
+                    <input
+                        id="name"
+                        type="text"
+                        placeholder="Enter Student Name"
+                        required
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    />
                 </div>
+
                 <div className="mb-6">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Student Age</label>
-                    <input onChange={(e)=>{
-                        setage(e.target.value)
-                    }} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="age" type="text" placeholder="Enter Student Age"/>
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="age">
+                        Student Age
+                    </label>
+                    <input
+                        id="age"
+                        type="text"
+                        placeholder="Enter Student Age"
+                        required
+                        value={age}
+                        onChange={(e) => setAge(e.target.value)}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    />
                 </div>
+
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">Student Gender</label>
-                    <input onChange={(e)=>{
-                        setgender(e.target.value)
-                    }} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="gender" type="text" placeholder="Enter Student Gender"/>
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="gender">
+                        Student Gender
+                    </label>
+                    <input
+                        id="gender"
+                        type="text"
+                        placeholder="Enter Student Gender"
+                        required
+                        value={gender}
+                        onChange={(e) => setGender(e.target.value)}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    />
                 </div>
+
                 <div className="flex items-center justify-between">
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">Submit</button>
+                    <button
+                        type="submit"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    >
+                        Submit
+                    </button>
                 </div>
             </form>
         </div>
