@@ -4,19 +4,23 @@ import axios from "axios";
 function Popup({ isOpen, onClose, onFormSubmit }) {
     const [name, setName] = useState('');
     const [age, setAge] = useState('');
+    const [grade, setGrade] = useState('');
+    const [address, setAddress] = useState('');
     const [gender, setGender] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newStudent = { name, age, gender };
+        const newStudent = { name, age, grade, address, gender };
 
         axios.post("http://localhost:8070/student/add/", newStudent)
             .then(() => {
                 alert("Student Added Successfully");
                 setName("");
                 setAge("");
+                setAddress("");
+                setGrade("");
                 setGender("");
-                onFormSubmit(); // Close popup after submit
+                onFormSubmit();
             })
             .catch((err) => {
                 alert("Error: " + err.message);
@@ -43,7 +47,7 @@ function Popup({ isOpen, onClose, onFormSubmit }) {
                 <form onSubmit={handleSubmit} className="text-left space-y-4">
                     <div>
                         <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="name">
-                            Student Name
+                            Name
                         </label>
                         <input
                             id="name"
@@ -58,7 +62,7 @@ function Popup({ isOpen, onClose, onFormSubmit }) {
 
                     <div>
                         <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="age">
-                            Student Age
+                            Age
                         </label>
                         <input
                             id="age"
@@ -71,9 +75,39 @@ function Popup({ isOpen, onClose, onFormSubmit }) {
                         />
                     </div>
 
+                    <div className="mb-6">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="grade">
+                            Grade
+                        </label>
+                        <input
+                            id="grade"
+                            type="number"
+                            placeholder="Enter Student Grade"
+                            required
+                            value={grade}
+                            onChange={(e) => setGrade(e.target.value)}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        />
+                    </div>
+
+                    <div className="mb-6">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="address">
+                            Address
+                        </label>
+                        <input
+                            id="address"
+                            type="text"
+                            placeholder="Enter Student Address"
+                            required
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        />
+                    </div>
+
                     <div>
                         <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="gender">
-                            Student Gender
+                            Gender
                         </label>
                         <input
                             id="gender"

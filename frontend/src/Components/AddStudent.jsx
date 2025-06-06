@@ -4,6 +4,8 @@ import axios from "axios";
 function AddStudent() {
     const [name, setName] = useState('');
     const [age, setAge] = useState('');
+    const [grade, setGrade] = useState('');
+    const [address, setAddress] = useState('');
     const [gender, setGender] = useState('');
 
     function sentData(e) {
@@ -11,6 +13,8 @@ function AddStudent() {
         const newStudent= {
             name,
             age,
+            grade,
+            address,
             gender
         }
 
@@ -18,6 +22,8 @@ function AddStudent() {
             alert("Student Add")
             setName("");
             setAge("");
+            setAddress("");
+            setGrade("");
             setGender("");
         }).catch((err)=>{
             alert(err)
@@ -54,6 +60,36 @@ function AddStudent() {
                         required
                         value={age}
                         onChange={(e) => setAge(e.target.value)}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    />
+                </div>
+
+                <div className="mb-6">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="age">
+                        Student Grade
+                    </label>
+                    <input
+                        id="age"
+                        type="text"
+                        placeholder="Enter Student Age"
+                        required
+                        value={grade}
+                        onChange={(e) => setAge(e.target.value)}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    />
+                </div>
+
+                <div className="mb-6">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="age">
+                        Address
+                    </label>
+                    <input
+                        id="address"
+                        type="text"
+                        placeholder="Enter Student Age"
+                        required
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     />
                 </div>

@@ -6,10 +6,14 @@ router.route("/add").post((req, res)=>{
     const name = req.body.name;
     const age = Number(req.body.age);
     const gender = req.body.gender;
+    const grade = Number(req.body.grade);
+    const address = req.body.address;
 
     const newStudent = new Student({
         name,
         age,
+        grade,
+        address,
         gender
     })
 
@@ -30,10 +34,12 @@ router.route("/").get((req, res)=>{
 
 router.route("/update/:id").put(async (req,res)=>{
     let userId = req.params.id;
-    const {name,age,gender} = req.body;
+    const {name,age,grade,address,gender} = req.body;
     const updateStudent = {
         name,
         age,
+        grade,
+        address,
         gender
     }
 

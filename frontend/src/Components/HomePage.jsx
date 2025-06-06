@@ -1,30 +1,28 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react';
 import {
     Search,
     Settings,
-    User,
     ChevronRight,
-    SlidersHorizontal,
     GraduationCap,
-    ArrowLeft,
-    ArrowRight,
-} from 'lucide-react'
-import PopUp from "./PopUp.jsx";
-import axios from "axios";
+} from 'lucide-react';
+import PopUp from './PopUp.jsx';
+import axios from 'axios';
+
 export function HomePage() {
-    const [searchTerm, setSearchTerm] = useState('')
+    const [searchTerm, setSearchTerm] = useState('');
     const [students, setStudents] = useState([]);
 
     useEffect(() => {
-        axios.get("http://localhost:8070/student")
+        axios.get('http://localhost:8070/student')
             .then((res) => {
                 setStudents(res.data);
-                console.log(res)
+                console.log(res);
             })
             .catch((err) => {
-                alert("Error: " + err.message);
+                alert('Error: ' + err.message);
             });
     }, []);
+
     return (
         <div className="bg-gray-100 min-h-screen w-full">
             <header className="bg-green-800 text-white p-4 flex justify-between items-center">
@@ -40,34 +38,35 @@ export function HomePage() {
                     </button>
                 </div>
             </header>
+
             <main className="container mx-auto p-6 bg-white mt-4 rounded-lg shadow-sm">
                 {/* Statistics Row */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-
                     <div className="p-4 bg-gray-50 rounded-md">
                         <div className="text-sm text-gray-600">Total Students</div>
                         <div className="flex items-center">
                             <GraduationCap className="text-green-800 mr-2" size={20} />
-                            <span className="text-3xl font-bold text-gray-800">{students.length}</span>
+                            <span className="text-3xl font-bold text-gray-800">
+                {students.length}
+              </span>
                         </div>
                     </div>
                     <div className="p-4 bg-gray-50 rounded-md">
                         <div className="text-sm text-gray-600">Primary Students</div>
                         <div className="flex items-center">
-              <span className="text-xs bg-gray-200 px-2 py-1 rounded mr-2">1-5</span>
+                            <span className="text-xs bg-gray-200 px-2 py-1 rounded mr-2">1-5</span>
                             <span className="text-3xl font-bold text-gray-800">520</span>
                         </div>
                     </div>
                     <div className="p-4 bg-gray-50 rounded-md">
                         <div className="text-sm text-gray-600">Middle Students</div>
                         <div className="flex items-center">
-              <span className="text-xs bg-gray-200 px-2 py-1 rounded mr-2">
-                6-9
-              </span>
+                            <span className="text-xs bg-gray-200 px-2 py-1 rounded mr-2">6-9</span>
                             <span className="text-3xl font-bold text-gray-800">430</span>
                         </div>
                     </div>
                 </div>
+
                 {/* Search and Filters */}
                 <div className="flex flex-col md:flex-row gap-4 mb-6">
                     <div className="relative flex-grow">
@@ -84,9 +83,10 @@ export function HomePage() {
                         />
                     </div>
                     <div className="flex space-x-2">
-                        <PopUp/>
+                        <PopUp />
                     </div>
                 </div>
+
                 {/* Students Table */}
                 <div className="overflow-x-auto">
                     <table className="min-w-full">
@@ -101,35 +101,40 @@ export function HomePage() {
                         </tr>
                         </thead>
                         <tbody>
-                        {students.map((student,index) => (
-                            <tr key={student.id} className="border-b hover:bg-gray-50">
-                                <td className="px-4 py-3">{index+1}</td>
-                                <td className="px-4 py-3 flex items-center">
-                                    <div className="w-8 h-8 rounded-full bg-gray-300 mr-2 overflow-hidden">
-                                        <img
-                                            src={`https://i.pravatar.cc/150?u=${index+1}`}
-                                            alt={student.name}
-                                            className="w-full h-full object-cover"
-                                        />
-                                    </div>
-                                    {student.name}
-                                </td>
-                                <td className="px-4 py-3">{student.grade}</td>
-                                <td className="px-4 py-3">{student.gender}</td>
-                                <td className="px-4 py-3">{student.age}</td>
-                                <td className="px-4 py-3">{student.address}</td>
-                                <td className="px-4 py-3">
-                                    <button className="text-green-800 flex items-center">
-                                        View <ChevronRight size={16} />
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                        {students
+                            .filter((student) =>
+                                student.name?.toLowerCase().includes(searchTerm.toLowerCase())
+                            )
+                            .map((student, index) => (
+                                <tr key={student.id || index} className="border-b hover:bg-gray-50">
+                                    <td className="px-4 py-3">{index + 1}</td>
+                                    <td className="px-4 py-3 flex items-center">
+                                        <div className="w-8 h-8 rounded-full bg-gray-300 mr-2 overflow-hidden">
+                                            <img
+                                                src={`https://i.pravatar.cc/150?u=${index + 1}`}
+                                                alt={student.name}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                        {student.name}
+                                    </td>
+                                    <td className="px-4 py-3">{student.grade}</td>
+                                    <td className="px-4 py-3">{student.gender}</td>
+                                    <td className="px-4 py-3">{student.age}</td>
+                                    <td className="px-4 py-3">{student.address}</td>
+                                    <td className="px-4 py-3">
+                                        <button className="text-green-800 flex items-center">
+                                            View <ChevronRight size={16} />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
             </main>
         </div>
-    )
+    );
 }
+
 export default HomePage;
