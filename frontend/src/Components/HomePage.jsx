@@ -16,12 +16,27 @@ export function HomePage() {
         axios.get('http://localhost:8070/student')
             .then((res) => {
                 setStudents(res.data);
-                console.log(res);
             })
             .catch((err) => {
                 alert('Error: ' + err.message);
             });
     }, []);
+
+    // ✅ Grouping students by grade
+    const gradeGroups = {
+        '1-5': 0,
+        '6-9': 0,
+        '10-11': 0,
+        '12-13': 0,
+    };
+
+    students.forEach(student => {
+        const grade = parseInt(student.grade);
+        if (grade >= 1 && grade <= 5) gradeGroups['1-5']++;
+        else if (grade >= 6 && grade <= 9) gradeGroups['6-9']++;
+        else if (grade >= 10 && grade <= 11) gradeGroups['10-11']++;
+        else if (grade >= 12 && grade <= 13) gradeGroups['12-13']++;
+    });
 
     return (
         <div className="bg-gray-100 min-h-screen w-full">
@@ -40,34 +55,42 @@ export function HomePage() {
             </header>
 
             <main className="container mx-auto p-6 bg-white mt-4 rounded-lg shadow-sm">
-                {/* Statistics Row */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                {/* 📊 Statistics Row */}
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
                     <div className="p-4 bg-gray-50 rounded-md">
                         <div className="text-sm text-gray-600">Total Students</div>
                         <div className="flex items-center">
                             <GraduationCap className="text-green-800 mr-2" size={20} />
-                            <span className="text-3xl font-bold text-gray-800">
-                {students.length}
-              </span>
+                            <span className="text-3xl font-bold text-gray-800">{students.length}</span>
                         </div>
                     </div>
                     <div className="p-4 bg-gray-50 rounded-md">
-                        <div className="text-sm text-gray-600">Primary Students</div>
-                        <div className="flex items-center">
-                            <span className="text-xs bg-gray-200 px-2 py-1 rounded mr-2">1-5</span>
-                            <span className="text-3xl font-bold text-gray-800">520</span>
+                        <div className="text-sm text-gray-600">Grades 1–5</div>
+                        <div className="text-3xl font-bold text-gray-800">
+                            {gradeGroups['1-5']}
                         </div>
                     </div>
                     <div className="p-4 bg-gray-50 rounded-md">
-                        <div className="text-sm text-gray-600">Middle Students</div>
-                        <div className="flex items-center">
-                            <span className="text-xs bg-gray-200 px-2 py-1 rounded mr-2">6-9</span>
-                            <span className="text-3xl font-bold text-gray-800">430</span>
+                        <div className="text-sm text-gray-600">Grades 6–9</div>
+                        <div className="text-3xl font-bold text-gray-800">
+                            {gradeGroups['6-9']}
+                        </div>
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-md">
+                        <div className="text-sm text-gray-600">Grades 10–11</div>
+                        <div className="text-3xl font-bold text-gray-800">
+                            {gradeGroups['10-11']}
+                        </div>
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-md">
+                        <div className="text-sm text-gray-600">Grades 12–13</div>
+                        <div className="text-3xl font-bold text-gray-800">
+                            {gradeGroups['12-13']}
                         </div>
                     </div>
                 </div>
 
-                {/* Search and Filters */}
+                {/* 🔍 Search and Filters */}
                 <div className="flex flex-col md:flex-row gap-4 mb-6">
                     <div className="relative flex-grow">
                         <Search
@@ -87,7 +110,7 @@ export function HomePage() {
                     </div>
                 </div>
 
-                {/* Students Table */}
+                {/* 🧑‍🎓 Students Table */}
                 <div className="overflow-x-auto">
                     <table className="min-w-full">
                         <thead>
@@ -103,7 +126,8 @@ export function HomePage() {
                         <tbody>
                         {students
                             .filter((student) =>
-                                student.name?.toLowerCase().includes(searchTerm.toLowerCase())
+                                student.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                student.id?.toString().includes(searchTerm)
                             )
                             .map((student, index) => (
                                 <tr key={student.id || index} className="border-b hover:bg-gray-50">
