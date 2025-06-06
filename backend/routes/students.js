@@ -1,73 +1,75 @@
 const router = require("express").Router();
+const Student = require("../models/student");
 
-let Student = require("../models/student.js");
-
-router.route("/add").post((req, res)=>{
-    const name = req.body.name;
-    const age = Number(req.body.age);
-    const gender = req.body.gender;
-    const grade = Number(req.body.grade);
-    const address = req.body.address;
+// Add a new student
+router.route("/add").post((req, res) => {
+    const { name, age, grade, gender, address } = req.body;
 
     const newStudent = new Student({
         name,
         age,
         grade,
-        address,
-        gender
-    })
-
-    newStudent.save().then(()=>{
-        res.json("Student Added")
-    }).catch((err)=>{
-        console.log(err);
+        gender,
+        address
     });
+
+    newStudent.save()
+        .then(() => res.status(201).json("Student added successfully"))
+        .catch((err) => res.status(500).json({ error: err.message }));
 });
 
-router.route("/").get((req, res)=>{
-    Student.find().then((student)=>{
-        res.json(student);
-    }).catch((err)=>{
-        console.log(err);
-    })
+// Get all students
+router.route("/").get((req, res) => {
+    Student.find()
+        .then((students) => res.status(200).json(students))
+        .catch((err) => res.status(500).json({ error: err.message }));
 });
 
-router.route("/update/:id").put(async (req,res)=>{
-    let userId = req.params.id;
-    const {name,age,grade,address,gender} = req.body;
-    const updateStudent = {
-        name,
-        age,
-        grade,
-        address,
-        gender
+// Update student by ID
+router.route("/update/:id").put(async (req, res) => {
+    const studentId = req.params.id;
+    const { name, age, grade, gender, address } = req.body;
+
+    try {
+        await Student.findByIdAndUpdate(studentId, {
+            name,
+            age,
+            grade,
+            gender,
+            address
+        });
+        res.status(200).json({ status: "Student updated successfully" });
+    } catch (err) {
+        res.status(500).json({ status: "Error updating student", error: err.message });
     }
-
-    const udpate = await Student.findByIdAndUpdate(userId,updateStudent).then(()=>{
-        res.status(200).send({status:"User Update"});
-    }).catch((err)=>{
-        console.log(err);
-        res.status(500).send({status:"Error with updating user",error:err.message})
-    });
 });
 
-router.route("/delete/:id").delete(async (req,res)=>{
-    let userId = req.params.id;
-    await Student.findByIdAndDelete(userId).then(()=>{
-        res.status(200).send({status:"User Delete"})
-    }).catch((err)=>{
-        res.status(200).send({status:"Error with delete user",error:err.message})
-    })
+// Delete student by ID
+router.route("/delete/:id").delete(async (req, res) => {
+    const studentId = req.params.id;
+
+    try {
+        await Student.findByIdAndDelete(studentId);
+        res.status(200).json({ status: "Student deleted successfully" });
+    } catch (err) {
+        res.status(500).json({ status: "Error deleting student", error: err.message });
+    }
 });
 
-router.route("/get/:id").get(async (req,res)=>{
-    let userId = req.params.id;
-    await Student.findById(userId).then((student)=>{
-        res.status(200).send({status:"User fetched",student})
-    }).catch((err)=>{
-        console.log(err.message);
-        res.status(500).send({status:"Error with get user",error:err.message})
-    })
-})
+// Get a single student by ID
+router.route("/get/:id").get(async (req, res) => {
+    const studentId = req.params.id;
+
+    try {
+        const student = await Student.findById(studentId);
+        if (student) {
+            res.status(200).json({ status: "Student fetched successfully", student });
+        } else {
+            res.status(404).json({ status: "Student not found" });
+        }
+    } catch (err) {
+        res.status(500).json({ status: "Error fetching student", error: err.message });
+    }
+});
 
 module.exports = router;

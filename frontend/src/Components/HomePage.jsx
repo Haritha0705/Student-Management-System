@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
     Search,
-    Settings,
-    ChevronRight,
+    Delete,
+    Edit,
     GraduationCap,
 } from 'lucide-react';
 import PopUp from './PopUp.jsx';
@@ -43,14 +43,9 @@ export function HomePage() {
             <header className="bg-green-800 text-white p-4 flex justify-between items-center">
                 <div className="flex items-center">
                     <GraduationCap className="mr-2" size={24} />
-                    <h1 className="text-xl font-bold">Riverstone Academy</h1>
+                    <h1 className="text-xl font-bold">ABC Academy</h1>
                     <span className="mx-2">•</span>
                     <span className="text-sm">Student Management System</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                    <button className="p-2 rounded-full hover:bg-green-700">
-                        <Settings size={20} />
-                    </button>
                 </div>
             </header>
 
@@ -90,7 +85,7 @@ export function HomePage() {
                     </div>
                 </div>
 
-                {/* 🔍 Search and Filters */}
+                {/*  Search and Filters */}
                 <div className="flex flex-col md:flex-row gap-4 mb-6">
                     <div className="relative flex-grow">
                         <Search
@@ -147,10 +142,19 @@ export function HomePage() {
                                     <td className="px-4 py-3">{student.age}</td>
                                     <td className="px-4 py-3">{student.address}</td>
                                     <td className="px-4 py-3">
-                                        <button className="text-green-800 flex items-center">
-                                            View <ChevronRight size={16} />
-                                        </button>
+                                        <div className="flex space-x-4">
+                                            <button className="text-green-700 hover:text-white hover:bg-green-700 border border-green-700 px-3 py-1 rounded flex items-center space-x-1 transition">
+                                                <span>Edit</span>
+                                                <Edit size={16} />
+                                            </button>
+                                            <button className="text-red-700 hover:text-white hover:bg-red-700 border border-red-700 px-3 py-1 rounded flex items-center space-x-1 transition">
+                                                <span>Delete</span>
+                                                <Delete size={16} />
+                                            </button>
+                                        </div>
                                     </td>
+
+
                                 </tr>
                             ))}
                         </tbody>

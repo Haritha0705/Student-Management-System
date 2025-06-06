@@ -75,33 +75,36 @@ function Popup({ isOpen, onClose, onFormSubmit }) {
                         />
                     </div>
 
-                    <div className="mb-6">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="grade">
+                    <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="grade">
                             Grade
                         </label>
-                        <input
+                        <select
                             id="grade"
-                            type="number"
-                            placeholder="Enter Student Grade"
                             required
                             value={grade}
                             onChange={(e) => setGrade(e.target.value)}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        />
+                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        >
+                            <option value="">Select Grade</option>
+                            {[...Array(12)].map((_, i) => (
+                                <option key={i + 1} value={i + 1}>{i + 1}</option>
+                            ))}
+                        </select>
                     </div>
 
-                    <div className="mb-6">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="address">
+                    <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="address">
                             Address
                         </label>
                         <input
                             id="address"
                             type="text"
-                            placeholder="Enter Student Address"
+                            placeholder="Enter address"
                             required
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
                     </div>
 
@@ -109,15 +112,17 @@ function Popup({ isOpen, onClose, onFormSubmit }) {
                         <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="gender">
                             Gender
                         </label>
-                        <input
+                        <select
                             id="gender"
-                            type="text"
-                            placeholder="Enter gender"
                             required
                             value={gender}
                             onChange={(e) => setGender(e.target.value)}
                             className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        />
+                        >
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
                     </div>
 
                     <button

@@ -10,30 +10,30 @@ function AddStudent() {
 
     function sentData(e) {
         e.preventDefault();
-        const newStudent= {
+        const newStudent = {
             name,
             age,
             grade,
             address,
             gender
-        }
+        };
 
-        axios.post("http://localhost:8070/student/add/",newStudent).then(()=>{
-            alert("Student Add")
+        axios.post("http://localhost:8070/student/add/", newStudent).then(() => {
+            alert("Student Added");
             setName("");
             setAge("");
-            setAddress("");
             setGrade("");
+            setAddress("");
             setGender("");
-        }).catch((err)=>{
-            alert(err)
-        })
+        }).catch((err) => {
+            alert(err);
+        });
     }
-
 
     return (
         <div className="w-full max-w-xs mx-auto mt-10">
             <form onSubmit={sentData} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
                         Student Name
@@ -49,7 +49,7 @@ function AddStudent() {
                     />
                 </div>
 
-                <div className="mb-6">
+                <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="age">
                         Student Age
                     </label>
@@ -64,29 +64,29 @@ function AddStudent() {
                     />
                 </div>
 
-                <div className="mb-6">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="age">
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="grade">
                         Student Grade
                     </label>
                     <input
-                        id="age"
+                        id="grade"
                         type="text"
-                        placeholder="Enter Student Age"
+                        placeholder="Enter Student Grade"
                         required
                         value={grade}
-                        onChange={(e) => setAge(e.target.value)}
+                        onChange={(e) => setGrade(e.target.value)}
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     />
                 </div>
 
-                <div className="mb-6">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="age">
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="address">
                         Address
                     </label>
                     <input
                         id="address"
                         type="text"
-                        placeholder="Enter Student Age"
+                        placeholder="Enter Address"
                         required
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
@@ -98,15 +98,17 @@ function AddStudent() {
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="gender">
                         Student Gender
                     </label>
-                    <input
+                    <select
                         id="gender"
-                        type="text"
-                        placeholder="Enter Student Gender"
                         required
                         value={gender}
                         onChange={(e) => setGender(e.target.value)}
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    />
+                    >
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
                 </div>
 
                 <div className="flex items-center justify-between">
