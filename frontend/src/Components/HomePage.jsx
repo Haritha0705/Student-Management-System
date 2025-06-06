@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import {
     Search,
     Settings,
@@ -9,99 +9,23 @@ import {
     ArrowLeft,
     ArrowRight,
 } from 'lucide-react'
+import PopUp from "./PopUp.jsx";
+import axios from "axios";
 export function HomePage() {
     const [searchTerm, setSearchTerm] = useState('')
     // Mock student data
-    const students = [
-        {
-            id: 1,
-            name: 'Tommy Smith',
-            regNum: 'A123BC',
-            grade: 7,
-            gender: 'Male',
-            age: 12,
-            ownerName: 'Oliver Thompson',
-            ownerJob: 'Childcare',
-            income: '£3,000',
-        },
-        {
-            id: 2,
-            name: 'Lucy Brown',
-            regNum: 'B456DE',
-            grade: 12,
-            gender: 'Female',
-            age: 17,
-            ownerName: 'Emily Thompson',
-            ownerJob: 'Bus Monitor',
-            income: '£3,000',
-        },
-        {
-            id: 3,
-            name: 'Jake White',
-            regNum: 'C789FG',
-            grade: 3,
-            gender: 'Male',
-            age: 8,
-            ownerName: 'James Smith',
-            ownerJob: 'Program Coordinator',
-            income: '£3,000',
-        },
-        {
-            id: 4,
-            name: 'Ella Green',
-            regNum: 'D012HI',
-            grade: 10,
-            gender: 'Female',
-            age: 15,
-            ownerName: 'Charlotte Smith',
-            ownerJob: 'Play Leader',
-            income: '£3,000',
-        },
-        {
-            id: 5,
-            name: 'Max Jones',
-            regNum: 'E345JK',
-            grade: 5,
-            gender: 'Male',
-            age: 10,
-            ownerName: 'Henry Johnson',
-            ownerJob: 'Tutor',
-            income: '£3,000',
-        },
-        {
-            id: 6,
-            name: 'Zoe Taylor',
-            regNum: 'F678LM',
-            grade: 9,
-            gender: 'Female',
-            age: 14,
-            ownerName: 'Amelia Johnson',
-            ownerJob: 'Support Worker',
-            income: '£3,000',
-        },
-        {
-            id: 7,
-            name: 'Leo Clark',
-            regNum: 'G901NO',
-            grade: 1,
-            gender: 'Male',
-            age: 5,
-            ownerName: 'George Brown',
-            ownerJob: 'Activities Organizer',
-            income: '£3,000',
-        },
-        {
-            id: 8,
-            name: 'Mia Adams',
-            regNum: 'H234PQ',
-            grade: 8,
-            gender: 'Female',
-            age: 13,
-            ownerName: 'Isabella Brown',
-            ownerJob: 'Workshop Facilitator',
-            income: '£3,000',
-        },
-    ]
+    const [students, setStudents] = useState([]);
+
+    useEffect(() => {
+        axios.get("http://localhost:8070/student")
+            .then((res) => {
+                setStudents(res.data);
+                console.log(res)
+            })
+            .catch((err) => {
+                alert("Error: " + err.message);
+            });
+    }, []);
     return (
         <div className="bg-gray-100 min-h-screen w-full">
             <header className="bg-green-800 text-white p-4 flex justify-between items-center">
@@ -131,9 +55,7 @@ export function HomePage() {
                     <div className="p-4 bg-gray-50 rounded-md">
                         <div className="text-sm text-gray-600">Primary Students</div>
                         <div className="flex items-center">
-              <span className="text-xs bg-gray-200 px-2 py-1 rounded mr-2">
-                1-5
-              </span>
+              <span className="text-xs bg-gray-200 px-2 py-1 rounded mr-2">1-5</span>
                             <span className="text-3xl font-bold text-gray-800">520</span>
                         </div>
                     </div>
@@ -163,10 +85,7 @@ export function HomePage() {
                         />
                     </div>
                     <div className="flex space-x-2">
-                        <button className="flex items-center bg-green-800 text-white rounded-md px-4 py-2">
-                            <span className="mr-2">Add Student</span>
-                            <span className="text-xl">+</span>
-                        </button>
+                        <PopUp/>
                     </div>
                 </div>
                 {/* Students Table */}
@@ -174,37 +93,32 @@ export function HomePage() {
                     <table className="min-w-full">
                         <thead>
                         <tr className="border-b">
-                            <th className="w-10 px-4 py-2"></th>
+                            <th className="text-left px-4 py-2">ID</th>
                             <th className="text-left px-4 py-2">Full Name</th>
                             <th className="text-left px-4 py-2">Grade</th>
                             <th className="text-left px-4 py-2">Gender</th>
                             <th className="text-left px-4 py-2">Age</th>
-
+                            <th className="text-left px-4 py-2">Address</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {students.map((student) => (
+                        {students.map((student,index) => (
                             <tr key={student.id} className="border-b hover:bg-gray-50">
-                                <td className="px-4 py-3">
-                                    <input type="checkbox" className="rounded" />
-                                </td>
+                                <td className="px-4 py-3">{index+1}</td>
                                 <td className="px-4 py-3 flex items-center">
                                     <div className="w-8 h-8 rounded-full bg-gray-300 mr-2 overflow-hidden">
                                         <img
-                                            src={`https://i.pravatar.cc/150?u=${student.id}`}
+                                            src={`https://i.pravatar.cc/150?u=${index+1}`}
                                             alt={student.name}
                                             className="w-full h-full object-cover"
                                         />
                                     </div>
                                     {student.name}
                                 </td>
-                                <td className="px-4 py-3">{student.regNum}</td>
                                 <td className="px-4 py-3">{student.grade}</td>
                                 <td className="px-4 py-3">{student.gender}</td>
                                 <td className="px-4 py-3">{student.age}</td>
-                                <td className="px-4 py-3">{student.ownerName}</td>
-                                <td className="px-4 py-3">{student.ownerJob}</td>
-                                <td className="px-4 py-3">{student.income}</td>
+                                <td className="px-4 py-3">{student.address}</td>
                                 <td className="px-4 py-3">
                                     <button className="text-green-800 flex items-center">
                                         View <ChevronRight size={16} />

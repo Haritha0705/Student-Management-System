@@ -1,0 +1,118 @@
+import React, { useState } from "react";
+import axios from "axios";
+
+function Popup({ isOpen, onClose, onFormSubmit }) {
+    const [name, setName] = useState('');
+    const [age, setAge] = useState('');
+    const [gender, setGender] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const newStudent = { name, age, gender };
+
+        axios.post("http://localhost:8070/student/add/", newStudent)
+            .then(() => {
+                alert("Student Added Successfully");
+                setName("");
+                setAge("");
+                setGender("");
+                onFormSubmit(); // Close popup after submit
+            })
+            .catch((err) => {
+                alert("Error: " + err.message);
+            });
+    };
+
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300"></div>
+
+            <div className="relative bg-white rounded-2xl shadow-2xl w-[90%] max-w-md p-6 z-10 text-center animate-fade-in">
+                <button
+                    onClick={onClose}
+                    className="absolute top-4 right-4 text-white bg-red-500 rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-600 transition"
+                    title="Close"
+                >
+                    ✕
+                </button>
+
+                <h1 className="text-2xl font-semibold text-gray-800 mb-4">Add Student</h1>
+
+                <form onSubmit={handleSubmit} className="text-left space-y-4">
+                    <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="name">
+                            Student Name
+                        </label>
+                        <input
+                            id="name"
+                            type="text"
+                            placeholder="Enter name"
+                            required
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="age">
+                            Student Age
+                        </label>
+                        <input
+                            id="age"
+                            type="number"
+                            placeholder="Enter age"
+                            required
+                            value={age}
+                            onChange={(e) => setAge(e.target.value)}
+                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="gender">
+                            Student Gender
+                        </label>
+                        <input
+                            id="gender"
+                            type="text"
+                            placeholder="Enter gender"
+                            required
+                            value={gender}
+                            onChange={(e) => setGender(e.target.value)}
+                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200"
+                    >
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
+}
+
+function PopUpAddStudent() {
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+    const openPopup = () => setIsPopupOpen(true);
+    const closePopup = () => setIsPopupOpen(false);
+
+    return (
+        <div>
+            <button onClick={openPopup} className="flex items-center bg-green-800 text-white rounded-md px-4 py-2">
+                <span className="mr-2">Add Student</span>
+                <span className="text-xl">+</span>
+            </button>
+            <Popup isOpen={isPopupOpen} onClose={closePopup} onFormSubmit={closePopup} />
+        </div>
+    );
+}
+
+export default PopUpAddStudent;

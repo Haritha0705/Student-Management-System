@@ -3,6 +3,7 @@
 // import AddStudent from "./Components/AddStudent.jsx";
 // import AllStudents from "./Components/AllStudents.jsx";
 import HomePage from "./Components/HomePage.jsx";
+import PopUp from "./Components/PopUp.jsx";
 
 const App = () => {
     return (

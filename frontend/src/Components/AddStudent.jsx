@@ -22,7 +22,6 @@ function AddStudent() {
         }).catch((err)=>{
             alert(err)
         })
-
     }
 
 
