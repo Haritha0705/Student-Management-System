@@ -13,7 +13,6 @@ import PopUp from "./PopUp.jsx";
 import axios from "axios";
 export function HomePage() {
     const [searchTerm, setSearchTerm] = useState('')
-    // Mock student data
     const [students, setStudents] = useState([]);
 
     useEffect(() => {
@@ -49,7 +48,7 @@ export function HomePage() {
                         <div className="text-sm text-gray-600">Total Students</div>
                         <div className="flex items-center">
                             <GraduationCap className="text-green-800 mr-2" size={20} />
-                            <span className="text-3xl font-bold text-gray-800">1375</span>
+                            <span className="text-3xl font-bold text-gray-800">{students.length}</span>
                         </div>
                     </div>
                     <div className="p-4 bg-gray-50 rounded-md">
@@ -94,7 +93,7 @@ export function HomePage() {
                         <thead>
                         <tr className="border-b">
                             <th className="text-left px-4 py-2">ID</th>
-                            <th className="text-left px-4 py-2">Full Name</th>
+                            <th className="text-left px-4 py-2">Name</th>
                             <th className="text-left px-4 py-2">Grade</th>
                             <th className="text-left px-4 py-2">Gender</th>
                             <th className="text-left px-4 py-2">Age</th>
@@ -128,38 +127,6 @@ export function HomePage() {
                         ))}
                         </tbody>
                     </table>
-                </div>
-                {/* Pagination */}
-                <div className="flex justify-between items-center mt-6">
-                    <button className="flex items-center text-gray-600 px-4 py-2 rounded">
-                        <ArrowLeft size={16} className="mr-1" /> Previous
-                    </button>
-                    <div className="flex space-x-2">
-                        <button className="w-8 h-8 flex items-center justify-center rounded-md bg-green-800 text-white">
-                            1
-                        </button>
-                        <button className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-100">
-                            2
-                        </button>
-                        <button className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-100">
-                            3
-                        </button>
-                        <span className="w-8 h-8 flex items-center justify-center">
-              ...
-            </span>
-                        <button className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-100">
-                            8
-                        </button>
-                        <button className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-100">
-                            9
-                        </button>
-                        <button className="w-8 h-8 flex items-center justify-center rounded-md hover:bg-gray-100">
-                            10
-                        </button>
-                    </div>
-                    <button className="flex items-center text-gray-600 px-4 py-2 rounded">
-                        Next <ArrowRight size={16} className="ml-1" />
-                    </button>
                 </div>
             </main>
         </div>
