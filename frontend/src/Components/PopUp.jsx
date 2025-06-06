@@ -2,23 +2,24 @@ import React, { useState } from "react";
 import axios from "axios";
 
 function Popup({ isOpen, onClose, onFormSubmit }) {
-    const [name, setName] = useState('');
-    const [age, setAge] = useState('');
-    const [grade, setGrade] = useState('');
-    const [address, setAddress] = useState('');
-    const [gender, setGender] = useState('');
+    const [name, setName] = useState("");
+    const [age, setAge] = useState("");
+    const [grade, setGrade] = useState("");
+    const [address, setAddress] = useState("");
+    const [gender, setGender] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const newStudent = { name, age, grade, address, gender };
 
-        axios.post("http://localhost:8070/student/add/", newStudent)
+        axios
+            .post("http://localhost:8070/student/add/", newStudent)
             .then(() => {
                 alert("Student Added Successfully");
                 setName("");
                 setAge("");
-                setAddress("");
                 setGrade("");
+                setAddress("");
                 setGender("");
                 onFormSubmit();
             })
@@ -31,8 +32,7 @@ function Popup({ isOpen, onClose, onFormSubmit }) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300"></div>
-
+            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300" />
             <div className="relative bg-white rounded-2xl shadow-2xl w-[90%] max-w-md p-6 z-10 text-center animate-fade-in">
                 <button
                     onClick={onClose}
@@ -79,18 +79,15 @@ function Popup({ isOpen, onClose, onFormSubmit }) {
                         <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="grade">
                             Grade
                         </label>
-                        <select
+                        <input
                             id="grade"
+                            type="number"
+                            placeholder="Enter grade"
                             required
                             value={grade}
                             onChange={(e) => setGrade(e.target.value)}
                             className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        >
-                            <option value="">Select Grade</option>
-                            {[...Array(12)].map((_, i) => (
-                                <option key={i + 1} value={i + 1}>{i + 1}</option>
-                            ))}
-                        </select>
+                        />
                     </div>
 
                     <div>
@@ -119,39 +116,24 @@ function Popup({ isOpen, onClose, onFormSubmit }) {
                             onChange={(e) => setGender(e.target.value)}
                             className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                         >
-                            <option value="">Select Gender</option>
+                            <option value="">Select gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
                     </div>
 
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200"
-                    >
-                        Submit
-                    </button>
+                    <div className="text-center">
+                        <button
+                            type="submit"
+                            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg transition"
+                        >
+                            Add Student
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
     );
 }
 
-function PopUpAddStudent() {
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
-
-    const openPopup = () => setIsPopupOpen(true);
-    const closePopup = () => setIsPopupOpen(false);
-
-    return (
-        <div>
-            <button onClick={openPopup} className="flex items-center bg-green-800 text-white rounded-md px-4 py-2">
-                <span className="mr-2">Add Student</span>
-                <span className="text-xl">+</span>
-            </button>
-            <Popup isOpen={isPopupOpen} onClose={closePopup} onFormSubmit={closePopup} />
-        </div>
-    );
-}
-
-export default PopUpAddStudent;
+export default Popup;

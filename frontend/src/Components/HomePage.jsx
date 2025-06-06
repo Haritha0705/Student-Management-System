@@ -1,41 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
     Search,
     Delete,
     Edit,
     GraduationCap,
-} from 'lucide-react';
-import PopUp from './PopUp.jsx';
-import axios from 'axios';
+} from "lucide-react";
+import Popup from "./PopUp.jsx";
+import axios from "axios";
 
-export function HomePage() {
-    const [searchTerm, setSearchTerm] = useState('');
+function HomePage() {
+    const [searchTerm, setSearchTerm] = useState("");
     const [students, setStudents] = useState([]);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-    useEffect(() => {
-        axios.get('http://localhost:8070/student')
+    const fetchStudents = () => {
+        axios
+            .get("http://localhost:8070/student")
             .then((res) => {
                 setStudents(res.data);
             })
             .catch((err) => {
-                alert('Error: ' + err.message);
+                alert("Error: " + err.message);
             });
-    }, []);
-
-    // ✅ Grouping students by grade
-    const gradeGroups = {
-        '1-5': 0,
-        '6-9': 0,
-        '10-11': 0,
-        '12-13': 0,
     };
 
-    students.forEach(student => {
+    useEffect(() => {
+        fetchStudents();
+    }, []);
+
+    const gradeGroups = {
+        "1-5": 0,
+        "6-9": 0,
+        "10-11": 0,
+        "12-13": 0,
+    };
+
+    students.forEach((student) => {
         const grade = parseInt(student.grade);
-        if (grade >= 1 && grade <= 5) gradeGroups['1-5']++;
-        else if (grade >= 6 && grade <= 9) gradeGroups['6-9']++;
-        else if (grade >= 10 && grade <= 11) gradeGroups['10-11']++;
-        else if (grade >= 12 && grade <= 13) gradeGroups['12-13']++;
+        if (grade >= 1 && grade <= 5) gradeGroups["1-5"]++;
+        else if (grade >= 6 && grade <= 9) gradeGroups["6-9"]++;
+        else if (grade >= 10 && grade <= 11) gradeGroups["10-11"]++;
+        else if (grade >= 12 && grade <= 13) gradeGroups["12-13"]++;
     });
 
     return (
@@ -50,7 +55,7 @@ export function HomePage() {
             </header>
 
             <main className="container mx-auto p-6 bg-white mt-4 rounded-lg shadow-sm">
-                {/* 📊 Statistics Row */}
+                {/* 📊 Statistics */}
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
                     <div className="p-4 bg-gray-50 rounded-md">
                         <div className="text-sm text-gray-600">Total Students</div>
@@ -59,33 +64,15 @@ export function HomePage() {
                             <span className="text-3xl font-bold text-gray-800">{students.length}</span>
                         </div>
                     </div>
-                    <div className="p-4 bg-gray-50 rounded-md">
-                        <div className="text-sm text-gray-600">Grades 1–5</div>
-                        <div className="text-3xl font-bold text-gray-800">
-                            {gradeGroups['1-5']}
+                    {Object.entries(gradeGroups).map(([range, count]) => (
+                        <div key={range} className="p-4 bg-gray-50 rounded-md">
+                            <div className="text-sm text-gray-600">Grades {range}</div>
+                            <div className="text-3xl font-bold text-gray-800">{count}</div>
                         </div>
-                    </div>
-                    <div className="p-4 bg-gray-50 rounded-md">
-                        <div className="text-sm text-gray-600">Grades 6–9</div>
-                        <div className="text-3xl font-bold text-gray-800">
-                            {gradeGroups['6-9']}
-                        </div>
-                    </div>
-                    <div className="p-4 bg-gray-50 rounded-md">
-                        <div className="text-sm text-gray-600">Grades 10–11</div>
-                        <div className="text-3xl font-bold text-gray-800">
-                            {gradeGroups['10-11']}
-                        </div>
-                    </div>
-                    <div className="p-4 bg-gray-50 rounded-md">
-                        <div className="text-sm text-gray-600">Grades 12–13</div>
-                        <div className="text-3xl font-bold text-gray-800">
-                            {gradeGroups['12-13']}
-                        </div>
-                    </div>
+                    ))}
                 </div>
 
-                {/*  Search and Filters */}
+                {/* 🔍 Search */}
                 <div className="flex flex-col md:flex-row gap-4 mb-6">
                     <div className="relative flex-grow">
                         <Search
@@ -100,12 +87,15 @@ export function HomePage() {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <div className="flex space-x-2">
-                        <PopUp />
-                    </div>
+                    <button
+                        onClick={() => setIsPopupOpen(true)}
+                        className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800"
+                    >
+                        + Add Student
+                    </button>
                 </div>
 
-                {/* 🧑‍🎓 Students Table */}
+                {/* 🧑‍🎓 Table */}
                 <div className="overflow-x-auto">
                     <table className="min-w-full">
                         <thead>
@@ -116,16 +106,18 @@ export function HomePage() {
                             <th className="text-left px-4 py-2">Gender</th>
                             <th className="text-left px-4 py-2">Age</th>
                             <th className="text-left px-4 py-2">Address</th>
+                            <th className="text-left px-4 py-2">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         {students
-                            .filter((student) =>
-                                student.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                student.id?.toString().includes(searchTerm)
+                            .filter(
+                                (student) =>
+                                    student.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                    student._id?.toString().includes(searchTerm)
                             )
                             .map((student, index) => (
-                                <tr key={student.id || index} className="border-b hover:bg-gray-50">
+                                <tr key={student._id || index} className="border-b hover:bg-gray-50">
                                     <td className="px-4 py-3">{index + 1}</td>
                                     <td className="px-4 py-3 flex items-center">
                                         <div className="w-8 h-8 rounded-full bg-gray-300 mr-2 overflow-hidden">
@@ -142,7 +134,7 @@ export function HomePage() {
                                     <td className="px-4 py-3">{student.age}</td>
                                     <td className="px-4 py-3">{student.address}</td>
                                     <td className="px-4 py-3">
-                                        <div className="flex space-x-4">
+                                        <div className="flex space-x-2">
                                             <button className="text-green-700 hover:text-white hover:bg-green-700 border border-green-700 px-3 py-1 rounded flex items-center space-x-1 transition">
                                                 <span>Edit</span>
                                                 <Edit size={16} />
@@ -153,14 +145,21 @@ export function HomePage() {
                                             </button>
                                         </div>
                                     </td>
-
-
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
             </main>
+
+            <Popup
+                isOpen={isPopupOpen}
+                onClose={() => setIsPopupOpen(false)}
+                onFormSubmit={() => {
+                    fetchStudents();
+                    setIsPopupOpen(false);
+                }}
+            />
         </div>
     );
 }
