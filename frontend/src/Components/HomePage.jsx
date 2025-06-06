@@ -18,10 +18,20 @@ function HomePage() {
             .get("http://localhost:8070/student")
             .then((res) => {
                 setStudents(res.data);
+                console.log("Incoming request data:", res.data);
             })
             .catch((err) => {
                 alert("Error: " + err.message);
             });
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`http://localhost:8070/student/delete/${id}`);
+            setStudents(students.filter((s) => s._id !== id));
+        } catch (err) {
+            alert("Delete failed: " + err.message);
+        }
     };
 
     useEffect(() => {
@@ -139,7 +149,7 @@ function HomePage() {
                                                 <span>Edit</span>
                                                 <Edit size={16} />
                                             </button>
-                                            <button className="text-red-700 hover:text-white hover:bg-red-700 border border-red-700 px-3 py-1 rounded flex items-center space-x-1 transition">
+                                            <button onClick={() => handleDelete(student._id)} className="text-red-700 hover:text-white hover:bg-red-700 border border-red-700 px-3 py-1 rounded flex items-center space-x-1 transition">
                                                 <span>Delete</span>
                                                 <Delete size={16} />
                                             </button>

@@ -18,6 +18,7 @@ router.route("/add").post((req, res) => {
         .catch((err) => res.status(500).json({ error: err.message }));
 });
 
+
 // Get all students
 router.route("/").get((req, res) => {
     Student.find()
