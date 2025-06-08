@@ -3,23 +3,19 @@ import axios from "axios";
 
 function Popup({ isOpen, onClose, onFormSubmit }) {
     const [name, setName] = useState("");
-    const [age, setAge] = useState("");
     const [grade, setGrade] = useState("");
-    const [address, setAddress] = useState("");
     const [gender, setGender] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newStudent = { name, age, grade, address, gender };
+        const newStudent = { name, grade, gender };
 
         axios
             .post("http://localhost:8070/student/add/", newStudent)
             .then(() => {
                 alert("Student Added Successfully");
                 setName("");
-                setAge("");
                 setGrade("");
-                setAddress("");
                 setGender("");
                 onFormSubmit();
             })
@@ -61,21 +57,6 @@ function Popup({ isOpen, onClose, onFormSubmit }) {
                     </div>
 
                     <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="age">
-                            Age
-                        </label>
-                        <input
-                            id="age"
-                            type="number"
-                            placeholder="Enter age"
-                            required
-                            value={age}
-                            onChange={(e) => setAge(e.target.value)}
-                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        />
-                    </div>
-
-                    <div>
                         <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="grade">
                             Grade
                         </label>
@@ -86,21 +67,6 @@ function Popup({ isOpen, onClose, onFormSubmit }) {
                             required
                             value={grade}
                             onChange={(e) => setGrade(e.target.value)}
-                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-1" htmlFor="address">
-                            Address
-                        </label>
-                        <input
-                            id="address"
-                            type="text"
-                            placeholder="Enter address"
-                            required
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
                             className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
                     </div>
@@ -125,9 +91,7 @@ function Popup({ isOpen, onClose, onFormSubmit }) {
                     <div className="text-center">
                         <button
                             type="submit"
-                            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg transition"
-                        >
-                            Add Student
+                            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg transition">Add Student
                         </button>
                     </div>
                 </form>
