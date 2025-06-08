@@ -3,14 +3,12 @@ const Student = require("../models/student");
 
 // Add a new student
 router.route("/add").post((req, res) => {
-    const { name, age, grade, gender, address } = req.body;
+    const { name, grade, gender } = req.body;
 
     const newStudent = new Student({
         name,
-        age,
         grade,
         gender,
-        address
     });
 
     newStudent.save()
@@ -28,15 +26,14 @@ router.route("/").get((req, res) => {
 // Update student by ID
 router.route("/update/:id").put(async (req, res) => {
     const studentId = req.params.id;
-    const { name, age, grade, gender, address } = req.body;
+    const { name, grade, gender } = req.body;
 
     try {
         await Student.findByIdAndUpdate(studentId, {
             name,
-            age,
             grade,
-            gender,
-            address
+            gender
+
         });
         res.status(200).json({ status: "Student updated successfully" });
     } catch (err) {
