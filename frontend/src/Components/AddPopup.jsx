@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-function Popup({ isOpen, onClose, onFormSubmit }) {
+function AddPopup({ isOpen, onClose, onFormSubmit }) {
     const [name, setName] = useState("");
     const [grade, setGrade] = useState("");
     const [gender, setGender] = useState("");
@@ -33,9 +33,7 @@ function Popup({ isOpen, onClose, onFormSubmit }) {
                 <button
                     onClick={onClose}
                     className="absolute top-4 right-4 text-white bg-red-500 rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-600 transition"
-                    title="Close"
-                >
-                    ✕
+                    title="Close">✕
                 </button>
 
                 <h1 className="text-2xl font-semibold text-gray-800 mb-4">Add Student</h1>
@@ -80,8 +78,7 @@ function Popup({ isOpen, onClose, onFormSubmit }) {
                             required
                             value={gender}
                             onChange={(e) => setGender(e.target.value)}
-                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        >
+                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
                             <option value="">Select gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -100,4 +97,4 @@ function Popup({ isOpen, onClose, onFormSubmit }) {
     );
 }
 
-export default Popup;
+export default AddPopup;

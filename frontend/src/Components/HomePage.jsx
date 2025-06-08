@@ -5,13 +5,17 @@ import {
     Edit,
     GraduationCap,
 } from "lucide-react";
-import Popup from "./PopUp.jsx";
+import AddPopup from "./AddPopup.jsx";
+import EditPopup from "./EditPopup.jsx";
 import axios from "axios";
 
 function HomePage() {
     const [searchTerm, setSearchTerm] = useState("");
     const [students, setStudents] = useState([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+    const [selectedStudent, setSelectedStudent] = useState(null);
+
 
     const fetchStudents = () => {
         axios
@@ -33,6 +37,13 @@ function HomePage() {
             alert("Delete failed: " + err.message);
         }
     };
+
+    const handleUpdate = (studentId) => {
+        const studentToEdit = students.find((s) => s._id === studentId);
+        setSelectedStudent(studentToEdit);
+        setIsEditPopupOpen(true);
+    };
+
 
     useEffect(() => {
         fetchStudents();
@@ -85,23 +96,17 @@ function HomePage() {
                 {/* 🔍 Search */}
                 <div className="flex flex-col md:flex-row gap-4 mb-6">
                     <div className="relative flex-grow">
-                        <Search
-                            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                            size={18}
-                        />
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18}/>
                         <input
                             type="text"
                             placeholder="Search student by ID or Name"
                             className="pl-10 pr-4 py-2 border border-gray-300 rounded-md w-full"
                             value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
+                            onChange={(e) => setSearchTerm(e.target.value)}/>
                     </div>
                     <button
                         onClick={() => setIsPopupOpen(true)}
-                        className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800"
-                    >
-                        + Add Student
+                        className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800">+ Add Student
                     </button>
                 </div>
 
@@ -114,8 +119,6 @@ function HomePage() {
                             <th className="text-left px-4 py-2">Name</th>
                             <th className="text-left px-4 py-2">Grade</th>
                             <th className="text-left px-4 py-2">Gender</th>
-                            <th className="text-left px-4 py-2">Age</th>
-                            <th className="text-left px-4 py-2">Address</th>
                             <th className="text-left px-4 py-2">Actions</th>
                         </tr>
                         </thead>
@@ -141,11 +144,9 @@ function HomePage() {
                                     </td>
                                     <td className="px-4 py-3">{student.grade}</td>
                                     <td className="px-4 py-3">{student.gender}</td>
-                                    <td className="px-4 py-3">{student.age}</td>
-                                    <td className="px-4 py-3">{student.address}</td>
                                     <td className="px-4 py-3">
                                         <div className="flex space-x-2">
-                                            <button className="text-green-700 hover:text-white hover:bg-green-700 border border-green-700 px-3 py-1 rounded flex items-center space-x-1 transition">
+                                            <button onClick={() => handleUpdate(student._id)} className="text-green-700 hover:text-white hover:bg-green-700 border border-green-700 px-3 py-1 rounded flex items-center space-x-1 transition">
                                                 <span>Edit</span>
                                                 <Edit size={16} />
                                             </button>
@@ -162,14 +163,23 @@ function HomePage() {
                 </div>
             </main>
 
-            <Popup
+            <AddPopup
                 isOpen={isPopupOpen}
                 onClose={() => setIsPopupOpen(false)}
                 onFormSubmit={() => {
                     fetchStudents();
                     setIsPopupOpen(false);
+                }}/>
+            <EditPopup
+                isOpen={isEditPopupOpen}
+                student={selectedStudent}
+                onClose={() => setIsEditPopupOpen(false)}
+                onFormSubmit={() => {
+                    fetchStudents();
+                    setIsEditPopupOpen(false);
                 }}
             />
+
         </div>
     );
 }
