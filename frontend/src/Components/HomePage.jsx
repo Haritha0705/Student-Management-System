@@ -1,11 +1,10 @@
-// HomePage.jsx
 import React, { useEffect, useState } from "react";
 import { Search, Delete, Edit, GraduationCap,User2 } from "lucide-react";
 import AddPopup from "./AddPopup.jsx";
 import EditPopup from "./EditPopup.jsx";
 import axios from "axios";
 
-function HomePage() {
+const HomePage = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [students, setStudents] = useState([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -58,9 +57,7 @@ function HomePage() {
             <header className="bg-green-800 text-white p-4 flex justify-between items-center">
                 <div className="flex items-center">
                     <GraduationCap className="mr-2" size={24} />
-                    <h1 className="text-xl font-bold">ABC Academy</h1>
-                    <span className="mx-2">•</span>
-                    <span className="text-sm">Student Management System</span>
+                    <h1 className="text-xl font-bold">Student Management System</h1>
                 </div>
             </header>
 
@@ -84,20 +81,9 @@ function HomePage() {
                 <div className="flex flex-col md:flex-row gap-4 mb-6">
                     <div className="relative flex-grow">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18}/>
-                        <input
-                            type="text"
-                            placeholder="Search student Name"
-                            className="pl-10 pr-4 py-2 border border-gray-300 rounded-md w-full"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
+                        <input type="text" placeholder="Search student Name" className="pl-10 pr-4 py-2 border border-gray-300 rounded-md w-full" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
                     </div>
-                    <button
-                        onClick={() => setIsPopupOpen(true)}
-                        className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800"
-                    >
-                        + Add Student
-                    </button>
+                    <button onClick={() => setIsPopupOpen(true)} className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800">+ Add Student</button>
                 </div>
 
                 <div className="overflow-x-auto">
@@ -123,11 +109,7 @@ function HomePage() {
                                     <td className="px-4 py-3">{index + 1}</td>
                                     <td className="px-4 py-3 flex items-center">
                                         <div className="w-8 h-8 rounded-full bg-gray-300 mr-2 overflow-hidden">
-                                            <img
-                                                src={`https://i.pravatar.cc/150?u=${index + 1}`}
-                                                alt={student.name}
-                                                className="w-full h-full object-cover"
-                                            />
+                                            <User2 className="w-full h-full object-cover text-green-700"/>
                                         </div>
                                         {student.name}
                                     </td>

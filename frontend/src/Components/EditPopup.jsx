@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-function EditPopup({ isOpen, onClose, student, onFormSubmit }) {
+const EditPopup = ({ isOpen, onClose, student, onFormSubmit }) => {
     const [name, setName] = useState("");
     const [grade, setGrade] = useState("");
     const [gender, setGender] = useState("");
