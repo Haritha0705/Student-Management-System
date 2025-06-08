@@ -1,4 +1,3 @@
-// EditPopup.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -15,76 +14,64 @@ function EditPopup({ isOpen, onClose, student, onFormSubmit }) {
         }
     }, [student]);
 
-    const handleUpdate = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const updatedStudent = { name, grade, gender };
-
-        axios
-            .put(`http://localhost:8070/student/update/${student._id}`, updatedStudent)
-            .then(() => {
-                alert("Student updated successfully");
-                onFormSubmit();
-            })
-            .catch((err) => {
-                alert("Error updating student: " + err.message);
+        try {
+            await axios.put(`http://localhost:8070/student/update/${student._id}`, {
+                name,
+                grade,
+                gender,
             });
+            onFormSubmit();
+            onClose();
+        } catch (err) {
+            alert("Failed to update student!");
+        }
     };
 
     if (!isOpen || !student) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
-            <div className="relative bg-white rounded-2xl shadow-xl w-[90%] max-w-md p-6 z-10 text-center animate-fade-in">
+            <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" />
+            <div className="relative bg-white rounded-xl shadow-md w-[90%] max-w-md p-6 z-10">
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 text-white bg-red-500 rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-600 transition"
-                    title="Close">✕
+                    className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8"
+                >
+                    ✕
                 </button>
-
-                <h1 className="text-2xl font-semibold text-gray-800 mb-4">Edit Student</h1>
-
-                <form onSubmit={handleUpdate} className="text-left space-y-4">
-                    <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1">Name</label>
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1">Grade</label>
-                        <input
-                            type="number"
-                            value={grade}
-                            onChange={(e) => setGrade(e.target.value)}
-                            required
-                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-bold text-gray-700 mb-1">Gender</label>
-                        <select
-                            value={gender}
-                            onChange={(e) => setGender(e.target.value)}
-                            required
-                            className="w-full px-3 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400"
-                        >
-                            <option value="">Select gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
-                    </div>
-                    <div className="text-center">
-                        <button
-                            type="submit"
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition">
-                            Update Student
-                        </button>
-                    </div>
+                <h2 className="text-xl font-semibold mb-4">Edit Student</h2>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <input
+                        className="w-full border px-3 py-2 rounded"
+                        placeholder="Name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                    />
+                    <select
+                        className="w-full border px-3 py-2 rounded"
+                        value={grade}
+                        onChange={(e) => setGrade(e.target.value)}
+                        required
+                    >
+                        <option value="">Select Grade</option>
+                        {[...Array(13)].map((_, i) => (
+                            <option key={i + 1} value={i + 1}>{i + 1}</option>
+                        ))}
+                    </select>
+                    <select
+                        className="w-full border px-3 py-2 rounded"
+                        value={gender}
+                        onChange={(e) => setGender(e.target.value)}
+                        required
+                    >
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                    <button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded">Update Student</button>
                 </form>
             </div>
         </div>

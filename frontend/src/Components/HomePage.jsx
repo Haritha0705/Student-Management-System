@@ -1,10 +1,6 @@
+// HomePage.jsx
 import React, { useEffect, useState } from "react";
-import {
-    Search,
-    Delete,
-    Edit,
-    GraduationCap,
-} from "lucide-react";
+import { Search, Delete, Edit, GraduationCap,User2 } from "lucide-react";
 import AddPopup from "./AddPopup.jsx";
 import EditPopup from "./EditPopup.jsx";
 import axios from "axios";
@@ -16,17 +12,11 @@ function HomePage() {
     const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
     const [selectedStudent, setSelectedStudent] = useState(null);
 
-
     const fetchStudents = () => {
         axios
             .get("http://localhost:8070/student")
-            .then((res) => {
-                setStudents(res.data);
-                console.log("Incoming request data:", res.data);
-            })
-            .catch((err) => {
-                alert("Error: " + err.message);
-            });
+            .then((res) => setStudents(res.data))
+            .catch((err) => alert("Error: " + err.message));
     };
 
     const handleDelete = async (id) => {
@@ -43,7 +33,6 @@ function HomePage() {
         setSelectedStudent(studentToEdit);
         setIsEditPopupOpen(true);
     };
-
 
     useEffect(() => {
         fetchStudents();
@@ -76,7 +65,6 @@ function HomePage() {
             </header>
 
             <main className="container mx-auto p-6 bg-white mt-4 rounded-lg shadow-sm">
-                {/* 📊 Statistics */}
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
                     <div className="p-4 bg-gray-50 rounded-md">
                         <div className="text-sm text-gray-600">Total Students</div>
@@ -93,24 +81,25 @@ function HomePage() {
                     ))}
                 </div>
 
-                {/* 🔍 Search */}
                 <div className="flex flex-col md:flex-row gap-4 mb-6">
                     <div className="relative flex-grow">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18}/>
                         <input
                             type="text"
-                            placeholder="Search student by ID or Name"
+                            placeholder="Search student Name"
                             className="pl-10 pr-4 py-2 border border-gray-300 rounded-md w-full"
                             value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}/>
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
                     </div>
                     <button
                         onClick={() => setIsPopupOpen(true)}
-                        className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800">+ Add Student
+                        className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800"
+                    >
+                        + Add Student
                     </button>
                 </div>
 
-                {/* 🧑‍🎓 Table */}
                 <div className="overflow-x-auto">
                     <table className="min-w-full">
                         <thead>
@@ -166,20 +155,14 @@ function HomePage() {
             <AddPopup
                 isOpen={isPopupOpen}
                 onClose={() => setIsPopupOpen(false)}
-                onFormSubmit={() => {
-                    fetchStudents();
-                    setIsPopupOpen(false);
-                }}/>
+                onFormSubmit={fetchStudents}
+            />
             <EditPopup
                 isOpen={isEditPopupOpen}
-                student={selectedStudent}
                 onClose={() => setIsEditPopupOpen(false)}
-                onFormSubmit={() => {
-                    fetchStudents();
-                    setIsEditPopupOpen(false);
-                }}
+                student={selectedStudent}
+                onFormSubmit={fetchStudents}
             />
-
         </div>
     );
 }
