@@ -1,3 +1,4 @@
+// server.js
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -22,11 +23,19 @@ mongoose.connect(MONGODB_URL)
     .catch((err) => console.error("MongoDB Connection Failed:", err));
 
 // Routes
+// All student routes will be under /api/student
 app.use("/api/student", studentRouter);
 
+// Add a new test route
 app.get("/api/new", (req, res) => {
-    return res.status(200).json({"message": "New Route"});
-})
+    return res.status(200).json({ message: "New Route works!" });
+});
+
+// Root route (optional)
+app.get("/", (req, res) => {
+    res.send("API is running");
+});
+
 // Start server
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
