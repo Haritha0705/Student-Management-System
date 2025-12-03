@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const studentRouter = require("./routes/students");
 
 // Load environment variables
 dotenv.config();
@@ -21,10 +22,9 @@ mongoose.connect(MONGODB_URL)
     .catch((err) => console.error("MongoDB Connection Failed:", err));
 
 // Routes
-const studentRouter = require("./routes/students");
-app.use("/student", studentRouter);
+app.use("api/student", studentRouter);
 
-app.get("/new", (req, res) => {
+app.get("api/new", (req, res) => {
     return res.status(200).json({"message": "New Route"});
 })
 // Start server
