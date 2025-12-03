@@ -16,10 +16,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Database connection
-mongoose.connect(MONGODB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
+mongoose.connect(MONGODB_URL)
     .then(() => console.log("MongoDB Connected Successfully"))
     .catch((err) => console.error("MongoDB Connection Failed:", err));
 
