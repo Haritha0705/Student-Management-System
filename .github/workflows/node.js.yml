@@ -33,6 +33,10 @@ jobs:
       working-directory: ./backend
       run: npm run build --if-present
 
+    - name: Restart PM2 app
+      working-directory: ./backend
+      run: pm2 restart api
+
     - name: Create .env
       working-directory: ./backend
       run: |
