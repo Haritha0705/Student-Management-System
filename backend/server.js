@@ -24,6 +24,9 @@ mongoose.connect(MONGODB_URL)
 const studentRouter = require("./routes/students");
 app.use("/student", studentRouter);
 
+app.get("/new", (req, res) => {
+    return res.status(200).json({"message": "New Route"});
+})
 // Start server
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
