@@ -22,9 +22,9 @@ mongoose.connect(MONGODB_URL)
     .catch((err) => console.error("MongoDB Connection Failed:", err));
 
 // Routes
-app.use("api/student", studentRouter);
+app.use("/api/student", studentRouter);
 
-app.get("api/new", (req, res) => {
+app.get("/api/new", (req, res) => {
     return res.status(200).json({"message": "New Route"});
 })
 // Start server
